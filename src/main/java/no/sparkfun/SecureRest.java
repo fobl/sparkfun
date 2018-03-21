@@ -61,16 +61,18 @@ public class SecureRest {
     }
 
     private static String rediswrite() {
-        Jedis jedis = new Jedis(redishost);
-        Random r = new Random();
-        jedis.set("foo", "bar ");
-//        return "ok";
-        return jedis.get("foo");
+//        Jedis jedis = new Jedis(redishost);
+//        Random r = new Random();
+//        jedis.set("foo", "bar ");
+////        return "ok";
+//        return jedis.get("foo");
+        return "ok";
     }
 
     private static Object redisread() {
-        Jedis jedis = new Jedis(redishost);
-        return jedis.get("bar");
+//        Jedis jedis = new Jedis(redishost);
+//        return jedis.get("bar");
+        return "ok";
     }
 
     private static String hello(){
