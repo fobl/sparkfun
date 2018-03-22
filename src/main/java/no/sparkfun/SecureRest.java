@@ -5,6 +5,10 @@ import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 //import redis.clients.jedis.Jedis;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.google.common.net.HttpHeaders.USER_AGENT;
 import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
@@ -42,6 +47,8 @@ public class SecureRest {
 
         get("/slow", (req, res) -> slow());
 
+        get("/callslow", (req, res) -> callslow());
+
 
         //post("/userResponse", "application/json", (req, res) -> "200 Ok");
         post("/userResponse", (req, res) -> {
@@ -57,6 +64,34 @@ public class SecureRest {
             Thread.sleep(600*1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+        return "finished";
+    }
+
+    private static String callslow() {
+        String url = "http://sparkfun-frodetest.test-dc.corp.telenor.no/slow";
+
+        try {
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("User-Agent", USER_AGENT);
+
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            System.out.println(response.toString());
+        } catch(Exception e){
+            throw new RuntimeException(e);
         }
         return "finished";
     }
