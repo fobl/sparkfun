@@ -2,6 +2,7 @@ package no.sparkfun;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import redis.clients.jedis.Jedis;
 //import redis.clients.jedis.Jedis;
 
 import java.nio.file.Files;
@@ -22,7 +23,7 @@ public class SecureRest {
 
     public static Logger log = LoggerFactory.getLogger(SecureRest.class);
 
-    public static String redishost = "127.0.0.1";
+    public static String redishost = "10.36.195.229";
 
     public static void main(String[] args) throws Exception {
 
@@ -61,18 +62,15 @@ public class SecureRest {
     }
 
     private static String rediswrite() {
-//        Jedis jedis = new Jedis(redishost);
-//        Random r = new Random();
-//        jedis.set("foo", "bar ");
-////        return "ok";
-//        return jedis.get("foo");
-        return "ok";
+        Jedis jedis = new Jedis(redishost);
+        Random r = new Random();
+        jedis.set("foo", "bar "+r.nextInt());
+        return jedis.get("foo");
     }
 
-    private static Object redisread() {
-//        Jedis jedis = new Jedis(redishost);
-//        return jedis.get("bar");
-        return "ok";
+    private static String redisread() {
+        Jedis jedis = new Jedis(redishost);
+        return jedis.get("bar");
     }
 
     private static String hello(){
