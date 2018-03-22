@@ -63,6 +63,7 @@ public class SecureRest {
 
     private static String rediswrite() {
         Jedis jedis = new Jedis(redishost);
+        jedis.auth("nHBhFnkuPcIn8GAs")
         Random r = new Random();
         jedis.set("foo", "bar "+r.nextInt());
         return jedis.get("foo");
@@ -70,6 +71,7 @@ public class SecureRest {
 
     private static String redisread() {
         Jedis jedis = new Jedis(redishost);
+        jedis.auth("nHBhFnkuPcIn8GAs")
         return jedis.get("bar");
     }
 
