@@ -1,0 +1,74 @@
+{
+  "parameters": {
+    "appProfile": "test",
+    "application.name": "sparkfun"
+  },
+  "application": {
+    "name": "sparkfun",
+    "build": {
+      "parent": "/dchub/build-spec/java-maven.json",
+      "namespace": "frodetest-ci",
+      "tag": "latest",
+      "builder": [
+        {
+          "id": "artifact",
+          "memory": "768Mi",
+          "memoryMax": "2Gi",
+          "environment": [
+            {
+              "id": "artifactDir",
+              "value": "target"
+            }
+          ]
+        }
+      ],
+      "git": {
+        "url": "ssh://git@source.telenor.no:7999/dchub/sparkfun.git",
+        "ref": "master"
+      }
+    },
+    "deployment": {
+      "parent": "/dchub/deployment-spec/java-with-istio-sidecar.json",
+      "namespace": "frodetest-sit",
+      "tag": "latest",
+      "autoscaler": {
+        "minReplicas": 1,
+        "maxReplicas": 2,
+        "targetCpuPercent": 80
+      },
+      "configMaps": [],
+      "secrets": [],
+      "environment": [
+        {
+          "id": "javaArgs",
+          "value": "#command line arguments#"
+        },
+        {
+          "id": "javaOptions",
+          "value": "-Dhttp.proxyHost=localhost -Dhttp.proxyPort=18080  -Xms128M -Xmx1024M -Dspring.profiles.active=${parameters.appProfile}"
+        }
+      ],
+      "endpoints": [
+        {
+          "id": "api",
+          "hostname": "${application.name}.test-dc.corp.telenor.no",
+          "containerPort": 8080,
+          "secure": false,
+          "termination": "edge"
+        }
+      ],
+      "readinessProbe": {
+        "port": 8080,
+        "path": "/hello",
+        "initialDelaySeconds": 30,
+        "periodSeconds": 20
+      },
+      "livenessProbe": {
+        "port": 8080,
+        "path": "/hello",
+        "initialDelaySeconds": 30,
+        "periodSeconds": 20
+      }
+    }
+  }
+}

@@ -61,7 +61,7 @@ public class SecureRest {
 
     private static String slow() {
         try {
-            Thread.sleep(600*1000);
+            Thread.sleep(310000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
