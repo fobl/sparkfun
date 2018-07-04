@@ -57,12 +57,35 @@
         </dependency>
     </dependencies>
 
+
+
+
     <repositories>
         <repository>
-            <id>proxy</id>
+            <id>central</id>
+            <name>Maven Repository Switchboard</name>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
             <url>https://nexus-proxy-dchub.test-dc.corp.telenor.no/nexus/</url>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <name>Maven Plugin Repository</name>
+            <url>https://nexus-proxy-dchub.test-dc.corp.telenor.no/nexus/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 
     <build>
         <resources>
