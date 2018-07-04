@@ -57,6 +57,13 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>proxy</id>
+            <url>https://nexus-proxy-dchub.test-dc.corp.telenor.no/nexus/</url>
+        </repository>
+    </repositories>
+
     <build>
         <resources>
             <resource>
